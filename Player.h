@@ -1,6 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include <string>
 
 class Player
 {
@@ -8,11 +9,22 @@ class Player
         Player();
         virtual ~Player();
 
-        int putCoin(int col,char coinType);
+        void play(int col);
+
+        std::string getName();
+        void setName(std::string nom);
+
+        char getCoinType();
+        void setCoinType(char x);
+
+
+
 
     protected:
 
     private:
+        std::string m_name;
+        char m_coinType;
 };
 
 #endif // PLAYER_H

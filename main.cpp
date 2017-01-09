@@ -1,10 +1,25 @@
 #include <iostream>
-#include "board.h"
+#include "PuissanceFour.h"
 
 using namespace std;
 
 int main()
 {
+
+PuissanceFour p4;
+const char* winner=NULL;
+
+
+PuissanceFour p4_2(3,3);
+
+
+
+
+
+
+
+
+
     bool victory;
     Board grille1;
 
