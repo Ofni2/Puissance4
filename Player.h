@@ -2,6 +2,9 @@
 #define PLAYER_H
 
 #include <string>
+#include <iostream>
+
+#include "Board.h"
 
 class Player
 {
@@ -17,14 +20,16 @@ class Player
         char getCoinType();
         void setCoinType(char x);
 
-
+        void setBoard(Board* board);
 
 
     protected:
 
-    private:
         std::string m_name;
         char m_coinType;
+        Board* m_board;
+
+
 };
 
 #endif // PLAYER_H

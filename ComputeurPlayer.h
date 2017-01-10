@@ -4,7 +4,7 @@
 #include "Player.h"
 
 
-class ComputeurPlayer : protected Player
+class ComputeurPlayer : public Player
 {
     public:
         ComputeurPlayer();

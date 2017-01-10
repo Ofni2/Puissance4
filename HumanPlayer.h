@@ -4,11 +4,13 @@
 #include "Player.h"
 
 
-class HumanPlayer : protected Player
+class HumanPlayer : public Player
 {
     public:
         HumanPlayer();
         virtual ~HumanPlayer();
+
+        void play(int col);
 
     protected:
 

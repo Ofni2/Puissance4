@@ -1,8 +1,9 @@
 #ifndef PUISSANCEFOUR_H
 #define PUISSANCEFOUR_H
 
-#include "Board.h"
 #include "Player.h"
+#include "HumanPlayer.h"
+#include "ComputeurPlayer.h"
 
 class PuissanceFour
 {
@@ -11,11 +12,7 @@ class PuissanceFour
     public:
 
         PuissanceFour();
-
-        PuissanceFour::PuissanceFour(int rows,
-                                     int cols,
-                                     std::string player1Name="Player_1",
-                                     std::string player2Name="Player_2" );
+        PuissanceFour(int rows,int cols,std::string player1Name="Player_1",std::string player2Name="Player_2",std::string partyType="vsIA" );
 
         std::string Play();
 

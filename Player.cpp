@@ -4,13 +4,11 @@ using namespace std;
 
 Player::Player()
 {
-
 }
 
 
 Player::~Player()
 {
-    //dtor
 }
 
 string Player::getName()
@@ -36,6 +34,10 @@ void Player::setCoinType(char x)
 
 void Player::play(int col)
 {
-
-
 }
+
+void Player::setBoard(Board* board)
+{
+    m_board= *board;
+}
+
