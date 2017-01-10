@@ -135,7 +135,7 @@ void Board::DisplayBoard()
 **/
 int Board::putCoin(int col,char coinType)
 {
-    if (m_coinsPerCol[col]>=m_totalRow)
+    if (m_coinsPerCol[col]>=m_totalRow || col<0)
     {
         return -1;
     }

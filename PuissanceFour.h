@@ -11,7 +11,11 @@ class PuissanceFour
     public:
 
         PuissanceFour();
-        PuissanceFour(int rows, int cols);
+
+        PuissanceFour::PuissanceFour(int rows,
+                                     int cols,
+                                     std::string player1Name="Player_1",
+                                     std::string player2Name="Player_2" );
 
         std::string Play();
 
@@ -19,15 +23,8 @@ class PuissanceFour
 
     private:
 
-
-
-        Board* m_Board;
-
-        int m_numberOfRow;
-        int m_numberOfCol;
-
-        Player m_player1;
-        Player m_player2;
+        Board* m_P4Board;
+        Player* m_P4Players[2];
 
 };
 
