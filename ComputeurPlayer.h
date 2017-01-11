@@ -1,18 +1,26 @@
-#ifndef COMPUTEURPLAYER_H
-#define COMPUTEURPLAYER_H
+#ifndef COMPUTERPLAYER_H
+#define COMPUTERPLAYER_H
 
 #include "Player.h"
+#include "Board.h"
 
 
-class ComputeurPlayer : public Player
+class ComputerPlayer : public Player
 {
     public:
-        ComputeurPlayer();
-        virtual ~ComputeurPlayer();
+
+        ComputerPlayer();
+
+        virtual std::string play(Board* board);
+
+        virtual ~ComputerPlayer();
+
 
     protected:
 
-    private:
+        int m_IALevel;
+
+        bool canPlay(Board* board,int row,int col);
 };
 
 #endif // COMPUTEURPLAYER_H

@@ -5,17 +5,11 @@ using namespace std;
 
 int main()
 {
+    // "vsH" to play versus an human
+    // "vsIA" to play versus the computer
+    // computer is always the second player
+    PuissanceFour P4(6,7,"Gregory",'x',"Guillaume",'o',"vsIA");
+    P4.launch();
 
-PuissanceFour p4;
-const char* winner=NULL;
-string win(" ");
-
-
-PuissanceFour p4_2(3,3);
-
-win=p4.Play();
-
-cout<<"winner is : "<<win<<endl;
-
-        return 0;
+    return 0;
 }

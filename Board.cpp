@@ -7,7 +7,7 @@ using namespace std;
 
 /**
 *
-* Method to create the Board with a default size
+* Method to create the Board with a default size ( 7 columns, 6 Rows)
 *
 **/
 Board::Board()
@@ -25,9 +25,9 @@ Board::Board()
     // dynamic allocation of the tab coinsPerRow
     m_coinsPerCol=new int[m_totalCol];
 
-    // dynamic allocation of the tab lastCoinPerCol
-    m_lastCoinPerCol=new int[m_totalCol];
+    m_coinsPerDirection=new int[8];
 
+    //initialisation of the board
     reset();
 }
 
@@ -56,9 +56,9 @@ Board::Board(int rows,int cols)
     // dynamic allocation of the tab coinsPerRow
     m_coinsPerCol=new int[m_totalCol];
 
-    // dynamic allocation of the tab lastCoinPerCol
-    m_lastCoinPerCol=new int[m_totalCol];
+    m_coinsPerDirection=new int[8];
 
+    //initialisation of the board
     reset();
 }
 
@@ -77,28 +77,31 @@ Board::~Board()
     }
 
     delete[] m_board;
-    delete[] m_lastCoinPerCol;
     delete[] m_coinsPerCol;
+    delete[] m_coinsPerDirection;
 }
 
 
 
 /**
 *
-* Method to empty the board
+* Method to empty/init the board
+*
+* Board are full with '.' and coinsPerCol[] is set to 0
 *
 **/
 void Board::reset()
 {
-    for (int i(0); i<m_totalRow; i++)
+    for (int j(0); j<m_totalCol; j++)
     {
-        for (int j(0); j<m_totalCol; j++)
+        for (int i(0); i<m_totalRow; i++)
         {
             m_board[i][j]='.';
         }
-        m_coinsPerCol[i]=0;
-        m_lastCoinPerCol[i]=0;
+        m_coinsPerCol[j]=0;
     }
+
+    for (int i(0);i<8;i++) {m_coinsPerDirection[i]=0;}
 }
 
 
@@ -110,14 +113,17 @@ void Board::reset()
 **/
 void Board::DisplayBoard()
 {
-    //int rows = sizeof(m_board)/sizeof(m_board[0]);
-    //int cols = sizeof(m_board[0])/sizeof(m_board[0][0]);
+    // display columns index
+    for(int i(0);i<m_totalCol;i++)
+        cout<<i<<" ";
+    cout<<endl;
 
+    // display grid
     for (int i(0); i<m_totalRow; i++)
     {
         for (int j(0); j<m_totalCol; j++)
         {
-            cout<<m_board[i][j];
+            cout<<m_board[i][j]<<" ";
         }
         cout<<endl;
     }
@@ -129,8 +135,9 @@ void Board::DisplayBoard()
 *
 * Method to put a coins in the board
 *
-* @param[in] :   int cols        : indice of the colum where to put the coin
-* @param[in] :   char coinType   : graphics of the coin ('x' or 'o')
+* @param[in]  :   int cols        : Index of the colum where to put the coin
+* @param[in]  :   char coinType   : Graphics of the coin ('x' or 'o')
+* @param[out] :   return          : Return -1 if the coin is put outside the board
 *
 **/
 int Board::putCoin(int col,char coinType)
@@ -141,7 +148,7 @@ int Board::putCoin(int col,char coinType)
     }
     else
     {
-        m_board[m_totalRow-m_coinsPerCol[col]-1][col]=coinType;
+        m_board[m_totalRow-(m_coinsPerCol[col])-1][col]=coinType;
         m_coinsPerCol[col]++;
     }
     return 0;
@@ -153,27 +160,50 @@ int Board::putCoin(int col,char coinType)
 *
 * Method to check if a coin is in a line of 4
 *
-* @param[in] :   int cols        : colum of the coin to consider
-* @param[in] :   char coinType   : row of the coin to consider
+* @param[in]  :   int row        : Row of the coin to consider
+* @param[in]  :   int col        : Column of the coin to consider
+* @param[out] :   return         : Returns "true" if there is a puissance4
 *
 **/
 bool Board::checkVictory(int row,int col)
 {
     int i;
     int coinCounter(0);
+    int m_coinsPerDirection[7]={0};
+/*
 
-//direction horizontale
+    401
+    5x2
+    673
+
+    coin at position x
+    direction 0 is vertical direction, from the coin to the top of the board
+    direction 3 is diagonal direction from top to bottom and left to right
+
+    oXXXo  considering the first X m_coinsPerDirection[2]=3  (first coins is taken into account)
+     ^                             m_coinsPerDirection[5]=1  (first coins is taken into account)
+*/
+
+
+// count the number of coins of the same type all around the coins of interest
+// be careful if you use checkVictory where the coinType is '.'
+
+//horizontal direction
+//--------------------
     coinCounter=1;
 
     // Sens droite/gauche
+    //--------------------
     i=1;
     while( (col-i) >=0 && m_board[row][col-i] == m_board[row][col])
     {
         coinCounter++;
         i++;
     }
+    m_coinsPerDirection[5]=coinCounter;
 
     // Sens gauche/droite
+    //--------------------
     i=1;
     while( (col+i)<m_totalCol &&  m_board[row][col] == m_board[row][col+i])
     {
@@ -181,29 +211,38 @@ bool Board::checkVictory(int row,int col)
         i++;
     }
 
+    // Be careful coinCounter is not reset when the sens is changing.
+    m_coinsPerDirection[2]=coinCounter-m_coinsPerDirection[5]+1;
+
     if (coinCounter==4)
     {
         return true;
     }
 
-//direction verticale;
+
+// vertical direction;
+//--------------------
     coinCounter=1;
 
     // Sens bas/haut
+    //--------------
     i=1;
     while( (row-i) >=0 && m_board[row-i][col] == m_board[row][col])
     {
         coinCounter++;
         i++;
     }
+    m_coinsPerDirection[0]=coinCounter;
 
     // Sens haut/bas
+    //--------------
     i=1;
     while( (row+i)<m_totalRow &&  m_board[row][col] == m_board[row+i][col])
     {
         coinCounter++;
         i++;
     }
+    m_coinsPerDirection[7]=coinCounter-m_coinsPerDirection[0]+1;
 
     if (coinCounter==4)
     {
@@ -212,9 +251,11 @@ bool Board::checkVictory(int row,int col)
 
 
 //direction diagonale gauche/droite
+//---------------------------------
     coinCounter=1;
 
     // Sens bas/haut
+    //--------------
 
     i=1;
     while( (col-i) >=0 && (row-i) >=0 && m_board[row-i][col-i] == m_board[row][col])
@@ -222,13 +263,17 @@ bool Board::checkVictory(int row,int col)
         coinCounter++;
         i++;
     }
+    m_coinsPerDirection[4]=coinCounter;
+
     // Sens haut/bas
+    //--------------
     i=1;
     while( (col+i) >m_totalCol && (row+i) >m_totalRow && m_board[row+i][col+i] == m_board[row][col])
     {
         coinCounter++;
         i++;
     }
+    m_coinsPerDirection[3]=coinCounter-m_coinsPerDirection[4]+1;
 
 
     if (coinCounter==4)
@@ -239,9 +284,11 @@ bool Board::checkVictory(int row,int col)
 
 
 //direction diagonale droite/gauche
+//---------------------------------
     coinCounter=1;
 
     // Sens bas/haut
+    //--------------
 
     i=1;
     while( (col+i) <m_totalCol && (row-i) >=0 && m_board[row-i][col+i] == m_board[row][col])
@@ -249,13 +296,17 @@ bool Board::checkVictory(int row,int col)
         coinCounter++;
         i++;
     }
+    m_coinsPerDirection[1]=coinCounter;
+
     // Sens haut/bas
+    //--------------
     i=1;
     while( (col-i) >=0 && (row+i) <m_totalRow && m_board[row+i][col-i] == m_board[row][col])
     {
         coinCounter++;
         i++;
     }
+    m_coinsPerDirection[6]=coinCounter-m_coinsPerDirection[1]+1;
 
 
     if (coinCounter==4)
@@ -264,16 +315,18 @@ bool Board::checkVictory(int row,int col)
     }
 
 
-
-
     return false;
 
 
 }
 
+
+
 /**
 *
 * Method to get the number of row in the board
+*
+* @param[out] : return    : Returns the row number of the board
 *
 **/
 int Board::getTotalRow()
@@ -287,17 +340,22 @@ int Board::getTotalRow()
 *
 * Method to get the number of col in the board
 *
+* @param[out] : return  : Returns the column number of the board
+*
 **/
 int Board::getTotalCol()
 {
     return  m_totalCol;
 }
 
+
+
 /**
 *
 * Method to get the number of coins in a colum
 *
-* @param[in] int col : index of the colum of interest
+* @param[in]  : int col : Index of the colum of interest
+* @param[out] : return  : Returns the number of coin in the column "col"
 *
 **/
 int Board::getCoinsPerCol(int col)
@@ -308,25 +366,43 @@ return m_coinsPerCol[col];
 
 /**
 *
-* Method to get the row of the last coin in a column
+* Method to get the number of coins in each direction
+* (usefull for IA)
 *
-* @param[in] int col : index of the colum of interest
+* @param[in]  : int col : Index of the colum of interest
+* @param[in]  : int dir : Index of the colum of interest
+* @param[out] : return  : Returns the number of coin in the column "col"
 *
 **/
-int Board::getLastCoinPos(int col)
+int* Board::getCoinsPerDirection(int row,int col)
 {
-
-return 0;
+ // method not optimal, is run for each dir whereas we already know all direction..
+    if ( m_board[row][col] !='.')
+    {
+        checkVictory(row,col);
+    }
+    return m_coinsPerDirection;
 }
 
 
-
-
-void Board::test(int row, int col)
+/**
+*
+* Method to get the type of a coin at a position
+*
+* @param[in]  : int row : Index of the row of interest
+* @param[in]  : int col : Index of the column of interest
+* @param[out] : return  : Returns the type of the coin
+*                         ( ' ' if there is not coins at this position)
+*
+**/
+char Board::getCoinType(int row,int col)
 {
-    reset();
-    m_board[row][col]='@';
-    DisplayBoard();
-
-
+if (m_board[row][col] != '.')
+    {
+     return m_board[row][col];
+    }
+    else
+    {
+        return ' ';
+    }
 }

@@ -7,14 +7,12 @@
 class HumanPlayer : public Player
 {
     public:
+
         HumanPlayer();
+
+        virtual std::string play(Board* board);
+
         virtual ~HumanPlayer();
-
-        void play(int col);
-
-    protected:
-
-    private:
 };
 
 #endif // HUMANPLAYER_H

@@ -9,10 +9,12 @@
 class Player
 {
     public:
-        Player();
-        virtual ~Player();
 
-        void play(int col);
+        Player();
+
+        Player(std::string name,char coinType);
+
+        virtual std::string play(Board* board);
 
         std::string getName();
         void setName(std::string nom);
@@ -20,16 +22,13 @@ class Player
         char getCoinType();
         void setCoinType(char x);
 
-        void setBoard(Board* board);
+        virtual ~Player();
 
 
     protected:
 
         std::string m_name;
         char m_coinType;
-        Board* m_board;
-
-
 };
 
 #endif // PLAYER_H
