@@ -9,8 +9,6 @@ using namespace std;
 **/
 Player::Player()
 {
-   m_name="no name";
-   m_coinType='x';
 }
 
 

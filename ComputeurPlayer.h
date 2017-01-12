@@ -14,6 +14,7 @@ class ComputerPlayer : public Player
         virtual std::string play(Board* board);
 
         int selectCol_1(Board* board);
+        int selectCol_2(Board* board);
 
         virtual ~ComputerPlayer();
 

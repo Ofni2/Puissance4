@@ -217,7 +217,7 @@ bool Board::checkVictory(int row,int col)
     // Be careful coinCounter is not reset when the sens is changing.
     //m_coinsPerDirection[2]=coinCounter-m_coinsPerDirection[5]+1;
 
-    if (coinCounter==4)
+    if (coinCounter>=4)
     {
         return true;
     }
@@ -247,7 +247,7 @@ bool Board::checkVictory(int row,int col)
     }
     //m_coinsPerDirection[7]=coinCounter-m_coinsPerDirection[0]+1;
 
-    if (coinCounter==4)
+    if (coinCounter>=4)
     {
         return true;
     }
@@ -279,7 +279,7 @@ bool Board::checkVictory(int row,int col)
     //m_coinsPerDirection[3]=coinCounter-m_coinsPerDirection[4]+1;
 
 
-    if (coinCounter==4)
+    if (coinCounter>=4)
     {
         return true;
     }
@@ -312,7 +312,7 @@ bool Board::checkVictory(int row,int col)
     //m_coinsPerDirection[6]=coinCounter-m_coinsPerDirection[1]+1;
 
 
-    if (coinCounter==4)
+    if (coinCounter>=4)
     {
         return true;
     }

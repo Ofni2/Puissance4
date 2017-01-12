@@ -57,6 +57,7 @@ PuissanceFour::PuissanceFour(int rows,
 {
 
 m_P4Board=new Board(rows,cols);
+m_gameType=partyType;
 
 if (partyType=="vsIA")
 {
@@ -182,6 +183,10 @@ void PuissanceFour::initCoinsType()
     char ans(' ');
     char coinsType(' ');
 
+    // to avoid problems when changing the game type
+    m_P4Players[0]->setCoinType('x');
+    m_P4Players[1]->setCoinType('o');
+
     cout<<"Coins type : "<<endl;
     cout<<m_P4Players[0]->getName()<<" plays with : "<<m_P4Players[0]->getCoinType()<<endl;
     cout<<m_P4Players[1]->getName()<<" plays with : "<<m_P4Players[1]->getCoinType()<<endl;
@@ -277,12 +282,12 @@ void PuissanceFour::initGameType()
         {
             if (m_gameType=="vsH")
             {
-                m_P4Players[2]=new ComputerPlayer();
+                m_P4Players[1]=new ComputerPlayer();
                 m_gameType="vsIA";
             }
             else if (m_gameType=="vsIA")
             {
-                m_P4Players[2]=new HumanPlayer();
+                m_P4Players[1]=new HumanPlayer();
                 m_gameType="vsH";
             }
         }
@@ -363,8 +368,8 @@ void PuissanceFour::DisplaySettings()
  cout<<"-------------------------------------------"<<endl;
  cout<<endl;
  cout<<"-------------------PLAYERS------------------"<<endl;
- cout<<"Player : "<<m_P4Players[0]->getName()<<"    plays with : "<<m_P4Players[0]->getCoinType()<<endl;
- cout<<"Player : "<<m_P4Players[1]->getName()<<"    plays with : "<<m_P4Players[1]->getCoinType()<<endl;
+ cout<<"Player 1 : "<<m_P4Players[0]->getName()<<"    plays with : "<<m_P4Players[0]->getCoinType()<<endl;
+ cout<<"Player 2 : "<<m_P4Players[1]->getName()<<"    plays with : "<<m_P4Players[1]->getCoinType()<<endl;
  cout<<"-------------------------------------------"<<endl;
  cout<<endl;
 }

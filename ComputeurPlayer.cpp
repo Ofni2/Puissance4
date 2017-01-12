@@ -7,7 +7,9 @@ using namespace std;
 
 ComputerPlayer::ComputerPlayer()
 {
-    m_IALevel=1;
+    m_name="IA";
+    m_coinType='o';
+    m_IALevel=2;
 }
 
 ComputerPlayer::~ComputerPlayer()
@@ -17,6 +19,8 @@ ComputerPlayer::~ComputerPlayer()
 string ComputerPlayer::play(Board* board)
 {
     int colToPlay(-1);
+    int colToPlay1(-1);
+    int colToPlay2(-1);
     int rowToPlay(-1);
     string winner("none");
 
@@ -26,6 +30,7 @@ string ComputerPlayer::play(Board* board)
     case (0):
     //IA plays randomly !
         winner=randomPlay(board);
+        break;
 
     case(1):
 
@@ -34,6 +39,9 @@ string ComputerPlayer::play(Board* board)
 
         if (colToPlay>=0)
         {
+            cout<<m_name<<" prevent opponent to play on columns : "<<colToPlay<<endl;
+            cout<<endl;
+
             board->putCoin(colToPlay,m_coinType);
             rowToPlay=board->getRowOfLastCoin(colToPlay);
             winner=board->checkVictory(rowToPlay,colToPlay);
@@ -45,10 +53,49 @@ string ComputerPlayer::play(Board* board)
 
         break;
 
-    case(3):
+    case(2):
+       // IA checks if it can win at the next turn else
+       // IA checks if opponent can win at the next turn  if not it play randomly
+
+        colToPlay2=selectCol_2(board);
+        colToPlay1=selectCol_1(board);
+
+
+
+        if ( colToPlay2 >=0)
+        {
+            cout<<m_name<<" winning play on columns : "<<colToPlay2<<endl;
+            cout<<endl;
+
+            board->putCoin(colToPlay2,m_coinType);
+            rowToPlay=board->getRowOfLastCoin(colToPlay2);
+            if(board->checkVictory(rowToPlay,colToPlay2)) {winner=m_name;}
+        }
+        else if ( colToPlay1 >= 0 )
+        {
+            cout<<m_name<<" prevent opponent to play on columns : "<<colToPlay1<<endl;
+            cout<<endl;
+
+            board->putCoin(colToPlay1,m_coinType);
+            rowToPlay=board->getRowOfLastCoin(colToPlay1);
+            winner=board->checkVictory(rowToPlay,colToPlay1);
+            if(board->checkVictory(rowToPlay,colToPlay1)) {winner=m_name;}
+        }
+        else
+        {
+            winner=randomPlay(board);
+        }
+
         break;
+
+
+
+        case(3):
         //IA checks if opponent can win at the next turn if not explorer the graph of possible plays
         //deep of the graph increase "intelligence" of IA
+
+        break;
+
     default:
         break;
 
@@ -98,7 +145,7 @@ string ComputerPlayer::randomPlay(Board* board)
     } while (coinNotInBoard == -1);
 
         //board->DisplayBoard();
-        cout<<"IA plays on columns : "<<colToPlay<<endl;
+        cout<<m_name<<" random plays on columns : "<<colToPlay<<endl;
         cout<<endl;
 
         rowToPlay=board->getRowOfLastCoin(colToPlay);
@@ -122,6 +169,38 @@ int ComputerPlayer::selectCol_1(Board* board)
             if( lastCoinRow>0 )
             {
                 board->putCoin(i,m_opponentCointype);
+
+                if ( board->checkVictory(board->getRowOfLastCoin(i),i) )
+                {
+                    board->removeCoin(i);
+                    colToPlay=i;
+                    return colToPlay;
+                }
+                else
+                {
+                    board->removeCoin(i);
+                }
+            }
+        }
+
+
+    return colToPlay;
+}
+
+
+int ComputerPlayer::selectCol_2(Board* board)
+{
+    int colToPlay(-1);
+    int lastCoinRow(0);
+
+    for (int i(0);i<board->getTotalCol();i++)
+        {
+            lastCoinRow=board->getRowOfLastCoin(i);
+
+            // if there is a free place to put a coin
+            if( lastCoinRow>0 )
+            {
+                board->putCoin(i,m_coinType);
 
                 if ( board->checkVictory(board->getRowOfLastCoin(i),i) )
                 {

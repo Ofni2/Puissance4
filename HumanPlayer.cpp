@@ -9,6 +9,8 @@ using namespace std;
 **/
 HumanPlayer::HumanPlayer()
 {
+    m_name="player 1";
+    m_coinType='x';
 }
 
 
@@ -52,12 +54,16 @@ string HumanPlayer::play(Board* board)
             cout<<endl;
             cout<<endl;
 
-            // putCoin return -1 while the column slected is out of the board
+            // putCoin return -1 while the column selected is out of the board
             coinNotInBoard=board->putCoin(col,m_coinType);
         }
         while( coinNotInBoard == -1 );
 
         coinRow=board->getTotalRow()-board->getCoinsPerCol(col);
+
+        cout<<m_name<<" plays on columns : "<<col<<endl;
+        cout<<endl;
+
 
         //if this play is a winning one, set the winner to player's name
         if ( board->checkVictory(coinRow,col) ) winner=m_name;
