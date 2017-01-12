@@ -268,6 +268,7 @@ void PuissanceFour::initGameType()
 {
 
     char ans(' ');
+    ComputerPlayer* IAPlayers;
 
     cout<<"game type is versus : "<<m_gameType <<endl;
 
@@ -282,13 +283,22 @@ void PuissanceFour::initGameType()
         {
             if (m_gameType=="vsH")
             {
+                IAPlayers=new ComputerPlayer();
+                m_P4Players[1]=IAPlayers;
                 m_P4Players[1]=new ComputerPlayer();
                 m_gameType="vsIA";
+                cout<<"game type is now on : "<<m_gameType<<endl;
+                cout<<endl;
+                cout<<"select level of IA :"<<endl;
+                cin>>IAPlayers->setIALevel();
+                cout<<endl;
             }
             else if (m_gameType=="vsIA")
             {
                 m_P4Players[1]=new HumanPlayer();
                 m_gameType="vsH";
+                cout<<"game type is now on : "<<m_gameType<<endl;
+                cout<<endl;
             }
         }
     } while (ans != 'y' && ans != 'n');
@@ -360,16 +370,17 @@ void PuissanceFour::DisplaySettings()
  cout<<endl;
  cout<<"-------------------GAME TYPE---------------"<<endl;
  cout<<"game type is : "<<m_gameType<<endl;
+ if (m_gameType=="vsIA") {cout<<"IA level is : "<<m_P4Players[1]->getIALevel()<<endl;}
  cout<<endl;
  cout<<"-------------------BOARD-------------------"<<endl;
  //cout<<"Board size : "<<endl;
  cout<<"Number of rows   : "<<m_P4Board->getTotalCol()<<endl;
  cout<<"Number of columns: "<<m_P4Board->getTotalRow()<<endl;
- cout<<"-------------------------------------------"<<endl;
  cout<<endl;
  cout<<"-------------------PLAYERS------------------"<<endl;
  cout<<"Player 1 : "<<m_P4Players[0]->getName()<<"    plays with : "<<m_P4Players[0]->getCoinType()<<endl;
  cout<<"Player 2 : "<<m_P4Players[1]->getName()<<"    plays with : "<<m_P4Players[1]->getCoinType()<<endl;
+ cout<<endl;
  cout<<"-------------------------------------------"<<endl;
  cout<<endl;
 }

@@ -16,6 +16,9 @@ class ComputerPlayer : public Player
         int selectCol_1(Board* board);
         int selectCol_2(Board* board);
 
+        int getIALevel();
+        void setIALevel(int const level);
+
         virtual ~ComputerPlayer();
 
 

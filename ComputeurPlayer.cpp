@@ -218,3 +218,16 @@ int ComputerPlayer::selectCol_2(Board* board)
 
     return colToPlay;
 }
+
+
+
+int ComputerPlayer::getIALevel()
+{
+    return m_IALevel;
+}
+
+
+void ComputerPlayer::setIALevel(int const level)
+{
+    m_IALevel=level;
+}

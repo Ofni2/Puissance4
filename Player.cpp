@@ -130,3 +130,7 @@ string Player::play(Board* board)
 }
 
 
+ int Player::getIALevel()
+ {
+
+ }

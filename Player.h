@@ -25,6 +25,8 @@ class Player
         char getOpponentCoinType();
         int setOpponentCoinType(char x);
 
+        virtual int getIALevel();
+
         virtual ~Player();
 
 
