@@ -290,7 +290,7 @@ void PuissanceFour::initGameType()
                 cout<<"game type is now on : "<<m_gameType<<endl;
                 cout<<endl;
                 cout<<"select level of IA :"<<endl;
-                cin>>IAPlayers->setIALevel();
+                //cin>>IAPlayers->setIALevel();
                 cout<<endl;
             }
             else if (m_gameType=="vsIA")
@@ -370,7 +370,7 @@ void PuissanceFour::DisplaySettings()
  cout<<endl;
  cout<<"-------------------GAME TYPE---------------"<<endl;
  cout<<"game type is : "<<m_gameType<<endl;
- if (m_gameType=="vsIA") {cout<<"IA level is : "<<m_P4Players[1]->getIALevel()<<endl;}
+// if (m_gameType=="vsIA") {cout<<"IA level is : "<<m_P4Players[1]->getIALevel()<<endl;}
  cout<<endl;
  cout<<"-------------------BOARD-------------------"<<endl;
  //cout<<"Board size : "<<endl;

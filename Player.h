@@ -10,30 +10,43 @@ class Player
 {
     public:
 
+        // Constructor
         Player();
 
         Player(std::string name,char coinType);
 
-        virtual std::string play(Board* board);
 
+        // Get
         std::string getName();
-        void setName(std::string nom);
 
         char getCoinType();
-        void setCoinType(char x);
 
         char getOpponentCoinType();
+
+
+        // Set
+        void setName(std::string nom);
+
+        void setCoinType(char x);
+
         int setOpponentCoinType(char x);
 
-        virtual int getIALevel();
 
+        // Other methods
+        virtual std::string play(Board* board);
+
+
+        // Destructor
         virtual ~Player();
 
 
     protected:
 
+        // Attributes
         std::string m_name;
+
         char m_coinType;
+
         char m_opponentCointype;
 };
 

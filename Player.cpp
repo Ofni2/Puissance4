@@ -4,24 +4,32 @@ using namespace std;
 
 /**
 *
-* default constructor
+* default constructor with :
+*
+* ->  m_name="Player"
+* ->  m_coinType='x'
+* ->  m_opponentCointype=' '
 *
 **/
 Player::Player()
 {
+    m_name="Player";
+    m_coinType='x';
+    m_opponentCointype=' ';
 }
 
 
 
 /**
 *
-* default constructor
+* General constructor
 *
 **/
 Player::Player(std::string name,char coinType)
 {
    m_name=name;
    m_coinType=coinType;
+   m_opponentCointype=' ';
 }
 
 
@@ -38,7 +46,7 @@ Player::~Player()
 
 /**
 *
-* Methode to get the name of the player
+* Method to get the name of the player
 *
 **/
 string Player::getName()
@@ -50,7 +58,7 @@ string Player::getName()
 
 /**
 *
-* Methode to set the name type of the player
+* Method to set the name type of the player
 *
 * @param[in] string name : name of the player
 *
@@ -64,7 +72,7 @@ void Player::setName(string name)
 
 /**
 *
-* Methode to get the coin type of the player
+* Method to get the coin type of the player
 *
 **/
 char Player::getCoinType()
@@ -76,7 +84,7 @@ char Player::getCoinType()
 
 /**
 *
-* Methode to set the coin type of the player
+* Method to set the coin type of the player
 *
 * @param[in] char x : type of the coin (it can be 'x', 'o', ...)
 *
@@ -90,15 +98,19 @@ void Player::setCoinType(char x)
 
 /**
 *
-* Methode to set the coin type of the opponent
+* Method to set the coin type of the opponent
 *
-* @param[in] char x : type of the coin (it can be 'x', 'o', ...)
+* @param[in]  char x     : type of the coin (it can be 'x', 'o', ...)
+* @param[out] return     : returns -1 if error (coinType already taken), else 0
 *
 **/
 int Player::setOpponentCoinType(char x)
 {
+    //if the chosen coin is already taken by the opponent return -1;
     if (m_coinType == x) {return -1;}
+
     m_opponentCointype=x;
+
     return 0;
 }
 
@@ -106,7 +118,7 @@ int Player::setOpponentCoinType(char x)
 
 /**
 *
-* Methode to get the coin type of the opponent
+* Method to get the coin type of the opponent
 *
 * @param[in] char x : type of the coin (it can be 'x', 'o', ...)
 *
@@ -120,8 +132,8 @@ char Player::getOpponentCoinType()
 
 /**
 *
-* Virtual methode to play
-* methode differs from Human or Computeur
+* Virtual Method to play
+* Method differs from Human or Computer
 *
 **/
 string Player::play(Board* board)
@@ -129,8 +141,3 @@ string Player::play(Board* board)
     return " ";
 }
 
-
- int Player::getIALevel()
- {
-
- }

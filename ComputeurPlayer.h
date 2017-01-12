@@ -9,24 +9,37 @@ class ComputerPlayer : public Player
 {
     public:
 
+        // Constructor
         ComputerPlayer();
 
-        virtual std::string play(Board* board);
+        ComputerPlayer(std::string name,char coinType,int IAlevel);
 
-        int selectCol_1(Board* board);
-        int selectCol_2(Board* board);
 
+        // Get
         int getIALevel();
+
+
+        // Set
         void setIALevel(int const level);
 
+
+        // Other methods
+        virtual std::string play(Board* board);
+
+        int selectCol(Board* board,int option);
+
+        std::string IA_1(Board* board);
+
+        std::string IA_2(Board* board);
+
+        // Destructor
         virtual ~ComputerPlayer();
 
 
     protected:
 
+        // Attributes
         int m_IALevel;
-
-        bool canPlay(Board* board,int row,int col);
 
         std::string randomPlay(Board* board);
 };
