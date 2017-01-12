@@ -22,6 +22,9 @@ class Player
         char getCoinType();
         void setCoinType(char x);
 
+        char getOpponentCoinType();
+        int setOpponentCoinType(char x);
+
         virtual ~Player();
 
 
@@ -29,6 +32,7 @@ class Player
 
         std::string m_name;
         char m_coinType;
+        char m_opponentCointype;
 };
 
 #endif // PLAYER_H

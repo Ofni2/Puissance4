@@ -36,11 +36,15 @@ class PuissanceFour
 
         void initBoardSize();
 
+        void initGameType();
+
         std::string Play();
 
         Board* m_P4Board;
 
         Player* m_P4Players[2];
+
+        std::string m_gameType;
 };
 
 #endif // PUISSANCEFOUR_H

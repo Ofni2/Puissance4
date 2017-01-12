@@ -13,6 +13,8 @@ class ComputerPlayer : public Player
 
         virtual std::string play(Board* board);
 
+        int selectCol_1(Board* board);
+
         virtual ~ComputerPlayer();
 
 
@@ -21,6 +23,8 @@ class ComputerPlayer : public Player
         int m_IALevel;
 
         bool canPlay(Board* board,int row,int col);
+
+        std::string randomPlay(Board* board);
 };
 
 #endif // COMPUTEURPLAYER_H

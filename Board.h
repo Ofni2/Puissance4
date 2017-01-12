@@ -27,7 +27,11 @@ class Board
 
         int* getCoinsPerDirection(int row,int col);
 
+        int getRowOfLastCoin(int col);
 
+        int setCoinType(char CoinPlayer1,char CoinPlayer2);
+
+        int removeCoin(int col);
 
         virtual ~Board();
 
@@ -43,6 +47,8 @@ class Board
         int* m_coinsPerCol;
 
         int* m_coinsPerDirection;
+
+        char m_coinType[2];
 };
 
 #endif // BOARD_H

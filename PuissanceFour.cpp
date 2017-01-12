@@ -16,15 +16,28 @@ using namespace std;
 **/
 PuissanceFour::PuissanceFour()
 {
-m_P4Board=new Board;
+    m_P4Board=new Board;
+    m_gameType="vsIA";
 
-m_P4Players[0]=new HumanPlayer;
-m_P4Players[0]->setName("Player 1");
-m_P4Players[0]->setCoinType('x');
+    m_P4Players[0]=new HumanPlayer;
+    m_P4Players[0]->setName("Player 1");
+    m_P4Players[0]->setCoinType('x');
+    m_P4Players[0]->setOpponentCoinType('o');
 
-m_P4Players[1]=new HumanPlayer;
-m_P4Players[1]->setName("Player 2");
-m_P4Players[1]->setCoinType('o');
+    if (m_gameType=="vsH")
+    {
+        m_P4Players[1]=new HumanPlayer;
+        m_P4Players[1]->setName("Player 2");
+        m_P4Players[1]->setCoinType('o');
+        m_P4Players[1]->setOpponentCoinType('x');
+    }
+    else if (m_gameType=="vsIA")
+    {
+        m_P4Players[1]=new ComputerPlayer;
+        m_P4Players[1]->setName("Player 2_IA");
+        m_P4Players[1]->setCoinType('o');
+        m_P4Players[1]->setOpponentCoinType('x');
+    }
 }
 
 
@@ -58,10 +71,11 @@ else if (partyType=="vsH")
 
 m_P4Players[0]->setName(player1Name);
 m_P4Players[0]->setCoinType(coinType1);
+m_P4Players[0]->setOpponentCoinType(coinType2);
 
 m_P4Players[1]->setName(player2Name);
 m_P4Players[1]->setCoinType(coinType2);
-
+m_P4Players[1]->setOpponentCoinType(coinType1);
 
 }
 
@@ -83,7 +97,7 @@ PuissanceFour::~PuissanceFour()
 
 /**
 *
-* methode to play a game
+* method to play a game
 *
 * @param[out] when game is over return the name of the winner
 *
@@ -121,7 +135,7 @@ string PuissanceFour::Play()
 
 /**
 *
-* methode to change the name of the players
+* method to change the name of the players
 *
 **/
 void PuissanceFour::initName()
@@ -160,7 +174,7 @@ void PuissanceFour::initName()
 
 /**
 *
-* methode to change the coin type of players
+* method to change the coin type of players
 *
 **/
 void PuissanceFour::initCoinsType()
@@ -176,6 +190,7 @@ void PuissanceFour::initCoinsType()
     {
         cout<<"do you want to change players's coin type ? (y/n)"<<endl;
         cin>>ans;
+        cout<<endl;
 
         if (ans=='y')
         {
@@ -184,10 +199,17 @@ void PuissanceFour::initCoinsType()
             m_P4Players[0]->setCoinType(coinsType);
             cout<<endl;
 
-            cout<<"input player 2 name : "<<endl;
-            cin>>coinsType;
-            m_P4Players[1]->setCoinType(coinsType);
-            cout<<endl;
+            do
+            {
+                cout<<"input player 2 coin type : "<<endl;
+                cin>>coinsType;
+                m_P4Players[1]->setCoinType(coinsType);
+                cout<<endl;
+
+            } while(coinsType == m_P4Players[0]->getCoinType());
+
+            m_P4Players[0]->setOpponentCoinType(m_P4Players[1]->getCoinType());
+            m_P4Players[1]->setOpponentCoinType(m_P4Players[0]->getCoinType());
         }
 
     } while (ans != 'y' && ans != 'n');
@@ -197,7 +219,7 @@ void PuissanceFour::initCoinsType()
 
 /**
 *
-* methode to change the size of the board
+* method to change the size of the board
 *
 **/
 void PuissanceFour::initBoardSize()
@@ -214,6 +236,7 @@ void PuissanceFour::initBoardSize()
     {
         cout<<"do you want to change the board size ? (y/n)"<<endl;
         cin>>ans;
+        cout<<endl;
 
         if (ans=='y')
         {
@@ -231,10 +254,47 @@ void PuissanceFour::initBoardSize()
 }
 
 
+/**
+*
+* method to
+*
+**/
+void PuissanceFour::initGameType()
+{
+
+    char ans(' ');
+
+    cout<<"game type is versus : "<<m_gameType <<endl;
+
+
+    do
+    {
+        cout<<"do you want to change the game type (y/n)"<<endl;
+        cin>>ans;
+        cout<<endl;
+
+        if (ans=='y')
+        {
+            if (m_gameType=="vsH")
+            {
+                m_P4Players[2]=new ComputerPlayer();
+                m_gameType="vsIA";
+            }
+            else if (m_gameType=="vsIA")
+            {
+                m_P4Players[2]=new HumanPlayer();
+                m_gameType="vsH";
+            }
+        }
+    } while (ans != 'y' && ans != 'n');
+}
+
+
+
 
 /**
 *
-* methode to launch the game
+* method to launch the game
 *
 **/
 void PuissanceFour::launch()
@@ -249,15 +309,23 @@ void PuissanceFour::launch()
     {
         cout<<"change game settings ? (y/n)"<<endl;
         cin>>ans;
+        cout<<endl;
 
         if (ans=='y')
         {
+            initGameType();
             initName();
             initCoinsType();
             initBoardSize();
+
+            DisplaySettings();
+            ans=' ';
         }
     }
     while (ans !='y' && ans !='n');
+
+
+
 
     do
     {
@@ -279,11 +347,14 @@ void PuissanceFour::launch()
 
 /**
 *
-* methode to display the game settings
+* method to display the game settings
 *
 **/
 void PuissanceFour::DisplaySettings()
 {
+ cout<<endl;
+ cout<<"-------------------GAME TYPE---------------"<<endl;
+ cout<<"game type is : "<<m_gameType<<endl;
  cout<<endl;
  cout<<"-------------------BOARD-------------------"<<endl;
  //cout<<"Board size : "<<endl;

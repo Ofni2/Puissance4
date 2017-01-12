@@ -92,6 +92,36 @@ void Player::setCoinType(char x)
 
 /**
 *
+* Methode to set the coin type of the opponent
+*
+* @param[in] char x : type of the coin (it can be 'x', 'o', ...)
+*
+**/
+int Player::setOpponentCoinType(char x)
+{
+    if (m_coinType == x) {return -1;}
+    m_opponentCointype=x;
+    return 0;
+}
+
+
+
+/**
+*
+* Methode to get the coin type of the opponent
+*
+* @param[in] char x : type of the coin (it can be 'x', 'o', ...)
+*
+**/
+char Player::getOpponentCoinType()
+{
+    return m_opponentCointype;
+}
+
+
+
+/**
+*
 * Virtual methode to play
 * methode differs from Human or Computeur
 *
