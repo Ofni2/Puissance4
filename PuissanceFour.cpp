@@ -16,13 +16,16 @@ using namespace std;
 **/
 PuissanceFour::PuissanceFour()
 {
+    // for test purpose, allow to change IA easily
+    int IAlevel(2);
     m_P4Board=new Board;
     m_gameType="vsIA";
+
 
     m_P4Players[0]=new HumanPlayer("Player 1",'x');
     m_P4Players[0]->setOpponentCoinType('o');
 
-    m_P4Players[1]=new ComputerPlayer("IA",'o',2);
+    m_P4Players[1]=new ComputerPlayer("IA",'o',IAlevel);
     m_P4Players[1]->setOpponentCoinType('x');
 }
 
@@ -39,10 +42,13 @@ PuissanceFour::PuissanceFour(int rows,int cols,string Name1,char coinType1,strin
 m_P4Board=new Board(rows,cols);
 m_gameType=partyType;
 
+// for test purpose, allow to change IA easily
+int IAlevel(2);
+
 if (partyType=="vsIA")
 {
     m_P4Players[0]=new HumanPlayer(Name1,coinType1);
-    m_P4Players[1]=new ComputerPlayer(Name2,coinType2,2);
+    m_P4Players[1]=new ComputerPlayer(Name2,coinType2,IAlevel);
 }
 else if (partyType=="vsH")
 {
@@ -51,8 +57,8 @@ else if (partyType=="vsH")
 }
 else if (partyType=="IAvsIA")
 {
-    m_P4Players[0]=new ComputerPlayer(Name1,coinType1,2);
-    m_P4Players[1]=new ComputerPlayer(Name2,coinType2,2);
+    m_P4Players[0]=new ComputerPlayer(Name1,coinType1,IAlevel);
+    m_P4Players[1]=new ComputerPlayer(Name2,coinType2,IAlevel);
 }
 
 m_P4Players[0]->setOpponentCoinType(coinType2);
@@ -285,7 +291,7 @@ void PuissanceFour::initGameType()
                 do {
                     cout<<"select the IA level (0/1/2) : "<<endl;
                     cin>>IALevel;
-                   } while (IALevel > 2 || IALevel <0 );
+                   } while (IALevel > 3 || IALevel <0 );
                 cout<<endl;
             }
             else if (m_gameType=="vsIA")

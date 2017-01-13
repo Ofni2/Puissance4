@@ -12,7 +12,7 @@ class ComputerPlayer : public Player
         // Constructor
         ComputerPlayer();
 
-        ComputerPlayer(std::string name,char coinType,int IAlevel);
+        ComputerPlayer(std::string name,char coinType,int IALevel);
 
 
         // Get
@@ -35,6 +35,8 @@ class ComputerPlayer : public Player
 
         // Internal methods
         int selectCol(Board* board,int option);
+
+        int IA_0(Board *board);
 
         int IA_1(Board* board);
 
