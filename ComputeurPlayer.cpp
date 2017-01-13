@@ -201,6 +201,53 @@ int ComputerPlayer::IA_2(Board* board)
 
 }
 
+/**
+*
+*
+*
+*
+*
+*
+**/
+int ComputerPlayer::IA_3(Board* board)
+{
+    int colToPlay(-1);
+    int col(-1);
+    int row(-1);
+
+    if (board == NULL) {return -3;}
+
+     colToPlay=IA_2(board)
+
+     colNotToPlay=board->putCoin(colToPlay,m_opponentCointype);
+
+     row=board->getRowOfLastCoin(colToPlay);
+     if (board->checkVictory(row,col))
+     {
+        srand(time(NULL));
+
+        do
+        {
+            colToPlay=rand()%(board->getTotalCol());
+            coinNotInBoard=board->putCoin(colToPlay  ,m_coinType );
+
+        } while (coinNotInBoard == -1 || colToPlay );
+     }
+
+     //check
+
+        // if IA or opponent can not win at the next turn
+        if (colToPlay1 == -1 && col == -1)
+        {
+            col=-1;
+        }
+
+ return col;
+
+}
+
+
+
 
 
 /**

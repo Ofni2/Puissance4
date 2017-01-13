@@ -40,6 +40,8 @@ class ComputerPlayer : public Player
 
         int IA_2(Board* board);
 
+        int IA_3(Board* board);
+
         std::string putCoin(Board* board,int colToPlay=-1);
 
 
