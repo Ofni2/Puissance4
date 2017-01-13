@@ -6,17 +6,17 @@ class Board
 {
     public:
 
+        // Constructor
         Board();
+
         Board(int rows,int cols);
 
-        void DisplayBoard();
 
-        void reset();
+        // Set
+        int setCoinType(char CoinPlayer1,char CoinPlayer2);
 
-        int putCoin(int col,char coinType);
 
-        bool checkVictory(int row,int col);
-
+        // Get
         int getTotalRow();
 
         int getTotalCol();
@@ -25,19 +25,30 @@ class Board
 
         int getCoinsPerCol(int col);
 
-        int* getCoinsPerDirection(int row,int col);
-
         int getRowOfLastCoin(int col);
 
-        int setCoinType(char CoinPlayer1,char CoinPlayer2);
+
+        // Other methods
+        void DisplayBoard();
+
+        void reset();
+
+        int putCoin(int col,char coinType);
 
         int removeCoin(int col);
 
+        int countCoins(int row,int col,int DirRow,int DirCol);
+
+        bool checkVictory(int row,int col);
+
+
+        // Destructor
         virtual ~Board();
 
 
     private:
 
+        //attributes
         int m_totalRow;
 
         int m_totalCol;
@@ -45,10 +56,6 @@ class Board
         char** m_board;
 
         int* m_coinsPerCol;
-
-        int* m_coinsPerDirection;
-
-        char m_coinType[2];
 };
 
 #endif // BOARD_H

@@ -8,10 +8,17 @@ class HumanPlayer : public Player
 {
     public:
 
+        // Constructor
         HumanPlayer();
 
-        virtual std::string play(Board* board);
+        HumanPlayer(std::string name,char coinType);
 
+        // External methods
+        std::string play(Board* board);
+
+        int getIALevel();
+
+        // Destructor
         virtual ~HumanPlayer();
 };
 

@@ -141,3 +141,8 @@ string Player::play(Board* board)
     return " ";
 }
 
+
+int Player::getIALevel()
+{
+    return 0;
+}

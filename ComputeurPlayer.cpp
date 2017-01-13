@@ -311,6 +311,7 @@ int ComputerPlayer::selectCol(Board* board,int opt)
 }
 
 
+
 /**
 *
 * Get the level of the IA
@@ -320,6 +321,8 @@ int ComputerPlayer::getIALevel()
 {
     return m_IALevel;
 }
+
+
 
 /**
 *

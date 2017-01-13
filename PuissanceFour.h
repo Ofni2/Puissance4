@@ -11,24 +11,24 @@ class PuissanceFour
 
     public:
 
+        // constructor
         PuissanceFour();
 
-        PuissanceFour(int rows,
-                      int cols,
-                      std::string player1Name="Player_1",
-                      char coinType1='o',
-                      std::string player2Name="Player_2",
-                      char coinType2='x',
-                      std::string partyType="vsIA" );
+        PuissanceFour(int rows,int cols,std::string player1Name,char coinType1,std::string player2Name,char coinType2,std::string partyType);
 
 
+        // External methods
         void launch();
 
+
+        // Destructor
         virtual ~PuissanceFour();
+
 
     private:
 
-        void DisplaySettings();
+        // Internal method
+        void displaySettings();
 
         void initName();
 
@@ -40,11 +40,16 @@ class PuissanceFour
 
         std::string Play();
 
+
+        // Attributes
         Board* m_P4Board;
 
         Player* m_P4Players[2];
 
         std::string m_gameType;
+
+
+
 };
 
 #endif // PUISSANCEFOUR_H

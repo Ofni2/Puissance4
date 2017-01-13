@@ -1,17 +1,17 @@
 #include <iostream>
+#include <cctype>
 #include "PuissanceFour.h"
 
 using namespace std;
 
 
+
 /**
 *
-* Default constructor
+* default constructor with :
 *
-* it initialize :
-*     - a 7x6 board
-*     - one human player named "Player 1", he/she plays "x"
-*     - one human player named "Player 2", he/she plays "o"
+* ->  m_P4Board         : a default 7x6 board
+* ->  a computer player : named "IA", it plays with 'o'
 *
 **/
 PuissanceFour::PuissanceFour()
@@ -19,41 +19,21 @@ PuissanceFour::PuissanceFour()
     m_P4Board=new Board;
     m_gameType="vsIA";
 
-    m_P4Players[0]=new HumanPlayer;
-    m_P4Players[0]->setName("Player 1");
-    m_P4Players[0]->setCoinType('x');
+    m_P4Players[0]=new HumanPlayer("Player 1",'x');
     m_P4Players[0]->setOpponentCoinType('o');
 
-    if (m_gameType=="vsH")
-    {
-        m_P4Players[1]=new HumanPlayer;
-        m_P4Players[1]->setName("Player 2");
-        m_P4Players[1]->setCoinType('o');
-        m_P4Players[1]->setOpponentCoinType('x');
-    }
-    else if (m_gameType=="vsIA")
-    {
-        m_P4Players[1]=new ComputerPlayer;
-        m_P4Players[1]->setName("Player 2_IA");
-        m_P4Players[1]->setCoinType('o');
-        m_P4Players[1]->setOpponentCoinType('x');
-    }
+    m_P4Players[1]=new ComputerPlayer("IA",'o',2);
+    m_P4Players[1]->setOpponentCoinType('x');
 }
 
 
 
 /**
 *
-* constructor to initializes a P4 play as necessary
+* General constructor
 *
 **/
-PuissanceFour::PuissanceFour(int rows,
-                             int cols,
-                             string player1Name,
-                             char coinType1,
-                             string player2Name,
-                             char coinType2,
-                             string partyType)
+PuissanceFour::PuissanceFour(int rows,int cols,string Name1,char coinType1,string Name2,char coinType2,string partyType)
 {
 
 m_P4Board=new Board(rows,cols);
@@ -61,21 +41,21 @@ m_gameType=partyType;
 
 if (partyType=="vsIA")
 {
-    m_P4Players[0]=new HumanPlayer;
-    m_P4Players[1]=new ComputerPlayer;
+    m_P4Players[0]=new HumanPlayer(Name1,coinType1);
+    m_P4Players[1]=new ComputerPlayer(Name2,coinType2,2);
 }
 else if (partyType=="vsH")
 {
-    m_P4Players[0]=new HumanPlayer;
-    m_P4Players[1]=new HumanPlayer;
+    m_P4Players[0]=new HumanPlayer(Name1,coinType1);
+    m_P4Players[1]=new HumanPlayer(Name2,coinType2);
+}
+else if (partyType=="IAvsIA")
+{
+    m_P4Players[0]=new ComputerPlayer(Name1,coinType1,2);
+    m_P4Players[1]=new ComputerPlayer(Name2,coinType2,2);
 }
 
-m_P4Players[0]->setName(player1Name);
-m_P4Players[0]->setCoinType(coinType1);
 m_P4Players[0]->setOpponentCoinType(coinType2);
-
-m_P4Players[1]->setName(player2Name);
-m_P4Players[1]->setCoinType(coinType2);
 m_P4Players[1]->setOpponentCoinType(coinType1);
 
 }
@@ -89,29 +69,28 @@ m_P4Players[1]->setOpponentCoinType(coinType1);
 **/
 PuissanceFour::~PuissanceFour()
 {
-        delete m_P4Board;
-        delete m_P4Players[0];
-        delete m_P4Players[1];
+    delete m_P4Board;
+    delete m_P4Players[0];
+    delete m_P4Players[1];
 }
 
 
 
 /**
 *
-* method to play a game
+* method to manage the game sequence
 *
-* @param[out] when game is over return the name of the winner
+* @param[out] return    : Returns "none" or the name of the winner
 *
 **/
 string PuissanceFour::Play()
 {
     string winner("none");
-    string playerName(" ");
     int turnCounter(0),j(0);
 
     do
     {
-        // player play with a board! (method differs from Human or Computeur)
+        // player play in a board (method differs from Human or Computer)
         winner=m_P4Players[j]->play(m_P4Board);
 
         // if someone win, exit from while loop
@@ -132,6 +111,7 @@ string PuissanceFour::Play()
 
     return winner;
 }
+
 
 
 /**
@@ -181,11 +161,18 @@ void PuissanceFour::initName()
 void PuissanceFour::initCoinsType()
 {
     char ans(' ');
-    char coinsType(' ');
+    string coinsType(" ");
 
     // to avoid problems when changing the game type
-    m_P4Players[0]->setCoinType('x');
-    m_P4Players[1]->setCoinType('o');
+    if (m_P4Players[0]->getCoinType() == m_P4Players[1]->getCoinType())
+    {
+        m_P4Players[0]->setCoinType('x');
+        m_P4Players[0]->setOpponentCoinType('o');
+
+        m_P4Players[1]->setCoinType('o');
+        m_P4Players[1]->setOpponentCoinType('x');
+
+    }
 
     cout<<"Coins type : "<<endl;
     cout<<m_P4Players[0]->getName()<<" plays with : "<<m_P4Players[0]->getCoinType()<<endl;
@@ -201,17 +188,19 @@ void PuissanceFour::initCoinsType()
         {
             cout<<"input player 1 coin type : "<<endl;
             cin>>coinsType;
-            m_P4Players[0]->setCoinType(coinsType);
+
+            m_P4Players[0]->setCoinType(coinsType[0]);
             cout<<endl;
 
             do
             {
                 cout<<"input player 2 coin type : "<<endl;
                 cin>>coinsType;
-                m_P4Players[1]->setCoinType(coinsType);
+
+                m_P4Players[1]->setCoinType(coinsType[0]);
                 cout<<endl;
 
-            } while(coinsType == m_P4Players[0]->getCoinType());
+            } while(coinsType[0] == m_P4Players[0]->getCoinType());
 
             m_P4Players[0]->setOpponentCoinType(m_P4Players[1]->getCoinType());
             m_P4Players[1]->setOpponentCoinType(m_P4Players[0]->getCoinType());
@@ -259,18 +248,20 @@ void PuissanceFour::initBoardSize()
 }
 
 
+
 /**
 *
-* method to
+* method to change the type of game (vsH or vsIA)
 *
 **/
 void PuissanceFour::initGameType()
 {
 
     char ans(' ');
-    ComputerPlayer* IAPlayers;
+    int IALevel(2);
 
     cout<<"game type is versus : "<<m_gameType <<endl;
+    if (m_gameType == "vsIA") {cout<<"IA level : "<<m_P4Players[1]->getIALevel()<<endl;;}
 
 
     do
@@ -283,14 +274,18 @@ void PuissanceFour::initGameType()
         {
             if (m_gameType=="vsH")
             {
-                IAPlayers=new ComputerPlayer();
-                m_P4Players[1]=IAPlayers;
+                //creation of a new computer player
                 m_P4Players[1]=new ComputerPlayer();
+
+                // switch game type
                 m_gameType="vsIA";
+
                 cout<<"game type is now on : "<<m_gameType<<endl;
-                cout<<endl;
-                cout<<"select level of IA :"<<endl;
-                //cin>>IAPlayers->setIALevel();
+
+                do {
+                    cout<<"select the IA level (0/1/2) : "<<endl;
+                    cin>>IALevel;
+                   } while (IALevel > 2 || IALevel <0 );
                 cout<<endl;
             }
             else if (m_gameType=="vsIA")
@@ -306,19 +301,17 @@ void PuissanceFour::initGameType()
 
 
 
-
 /**
 *
 * method to launch the game
 *
 **/
 void PuissanceFour::launch()
-
 {
     string winner("none");
     char ans(' ');
 
-    DisplaySettings();
+    displaySettings();
 
     do
     {
@@ -333,7 +326,7 @@ void PuissanceFour::launch()
             initCoinsType();
             initBoardSize();
 
-            DisplaySettings();
+            displaySettings();
             ans=' ';
         }
     }
@@ -365,15 +358,14 @@ void PuissanceFour::launch()
 * method to display the game settings
 *
 **/
-void PuissanceFour::DisplaySettings()
+void PuissanceFour::displaySettings()
 {
  cout<<endl;
  cout<<"-------------------GAME TYPE---------------"<<endl;
  cout<<"game type is : "<<m_gameType<<endl;
-// if (m_gameType=="vsIA") {cout<<"IA level is : "<<m_P4Players[1]->getIALevel()<<endl;}
+ if (m_gameType=="vsIA") {cout<<"IA level is : "<<m_P4Players[1]->getIALevel()<<endl;}
  cout<<endl;
  cout<<"-------------------BOARD-------------------"<<endl;
- //cout<<"Board size : "<<endl;
  cout<<"Number of rows   : "<<m_P4Board->getTotalCol()<<endl;
  cout<<"Number of columns: "<<m_P4Board->getTotalRow()<<endl;
  cout<<endl;

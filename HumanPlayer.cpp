@@ -4,20 +4,38 @@ using namespace std;
 
 /**
 *
-* Default human constructor
+* default constructor with :
+*
+* ->  m_name="H_Player"
+* ->  m_coinType='x'
+* ->  m_opponentCointype=' '
 *
 **/
 HumanPlayer::HumanPlayer()
 {
-    m_name="player 1";
+    m_name="H_player";
     m_coinType='x';
+    m_opponentCointype=' ';
+}
+
+
+/**
+*
+* General constructor
+*
+**/
+HumanPlayer::HumanPlayer(string name,char coinType)
+{
+    m_name=name;
+    m_coinType=coinType;
+    m_opponentCointype=' ';
 }
 
 
 
 /**
 *
-* Default human destructor
+* Default destructor
 *
 **/
 HumanPlayer::~HumanPlayer()
@@ -28,26 +46,29 @@ HumanPlayer::~HumanPlayer()
 
 /**
 *
-* Methode used for human to play
+* Method used for human to play
 *
-* @param[in] : Board* board : pointer to a board where to play
-* @param[out] : if the play is winning, return the name of the player
-*               else return "none"
+* @param[in]  : Board* board    : pointer to a board where to play
+* @param[out] : return          : Returns the name of the winner,else return "none" (or Err_ if error occurs)
 *
 **/
 string HumanPlayer::play(Board* board)
 {
-       int col,coinRow,coinNotInBoard(-1);
+       int col;
+       int coinRow;
+       int coinNotInBoard(-1);
+
        string winner("none");
 
         // if no board to play exit
-        if (board==NULL) return "No Board to play !";
+        if (board==NULL) return "Err_Board_H_play";
 
         do
         {
             board->DisplayBoard();
 
-            cout<<"Tour de : "<<m_name<<"  vous jouer avec : "<<m_coinType<<endl;
+            cout<<"Tour de         : "<<m_name<<endl;
+            cout<<"vous jouez avec : "<<m_coinType<<endl;
 
             cout<<"indiquer la colonne ou jouer : (0 a "<<(board->getTotalCol()-1)<<")"<<endl;
             cin>>col;
@@ -59,14 +80,20 @@ string HumanPlayer::play(Board* board)
         }
         while( coinNotInBoard == -1 );
 
-        coinRow=board->getTotalRow()-board->getCoinsPerCol(col);
-
         cout<<m_name<<" plays on columns : "<<col<<endl;
         cout<<endl;
 
+        coinRow=board->getRowOfLastCoin(col);
 
         //if this play is a winning one, set the winner to player's name
         if ( board->checkVictory(coinRow,col) ) winner=m_name;
 
         return winner;
+}
+
+
+
+int HumanPlayer::getIALevel()
+{
+    return 0;
 }

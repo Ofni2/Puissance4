@@ -23,6 +23,8 @@ class Player
 
         char getOpponentCoinType();
 
+        virtual int getIALevel();
+
 
         // Set
         void setName(std::string nom);
@@ -32,7 +34,7 @@ class Player
         int setOpponentCoinType(char x);
 
 
-        // Other methods
+        // External methods
         virtual std::string play(Board* board);
 
 
