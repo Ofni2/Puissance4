@@ -40,6 +40,7 @@ ComputerPlayer::ComputerPlayer(string name,char coinType,int IAlevel)
 }
 
 
+
 /**
 *
 * Destructor
@@ -61,6 +62,7 @@ ComputerPlayer::~ComputerPlayer()
 string ComputerPlayer::play(Board* board)
 {
     string winner("none");
+    int col(-1);
 
 
     switch(m_IALevel)
@@ -69,27 +71,44 @@ string ComputerPlayer::play(Board* board)
     //IA plays randomly !
     case (0):
 
-        winner=randomPlay(board);
+        col=-1;
         break;
 
     //IA checks if opponent can win at the next turn if not, it plays randomly
     case(1):
 
-        winner=IA_1(board);
+        col=IA_1(board);
         break;
 
     // IA first checks if it can win. If not check if opponent can win. if not play randomly
     case(2):
 
-        winner=IA_2(board);
+        col=IA_2(board);
         break;
+
+    // IA_3
+    case(3):
+        // For IA_3 add a more deeper vision (graph of possible move ?)
+        // for example IA cannot anticipate that if it plays in columns 5, opponent will win at the next turn
+        //
+        //
+        //   1 2 3 4 5 6 7 8
+        //   . . . . . . . .
+        //   . . . . . . . .
+        //   . . . . . . . .
+        //   . . X O . . . .
+        //   . . O X X . . .
+        //   . O X O O . . .
+
 
     //IA plays randomly !
     default:
 
-        winner=randomPlay(board);
+        col=-1;
         break;
     }
+
+    winner=putCoin(board,col);
 
     return winner;
 }
@@ -103,43 +122,36 @@ string ComputerPlayer::play(Board* board)
 *        if opponent can't win, IA plays randomly
 *
 * @param[in]  Board* board  : Pointer to a board
-* @param[out] return        : Returns  ComputerPlayer name if it is a winning move, else return "none"
+* @param[out] return        : Returns  index of the columns where the IA must play
 *
 **/
-string ComputerPlayer::IA_1(Board* board)
+int ComputerPlayer::IA_1(Board* board)
 {
     int colToPlay(-1);
-    int rowToPlay(0);
-    string winner("none");
+    int  col(-1);
 
-    if (board == NULL) {return "Err_Board_IA_1";}
+    if (board == NULL) {return -2;}
 
         // check if opponent can win
         colToPlay=selectCol(board,2);
 
-        if (colToPlay >= 0)
+        if ( colToPlay >= 0 && colToPlay < board->getTotalCol() )
         {
-            cout<<m_name<<" prevent opponent to play on columns : "<<colToPlay<<endl;
-            cout<<endl;
-
-            // play  to prevent opponent victory
-            board->putCoin(colToPlay,m_coinType);
-
-            // check if the IA have win with it's move
-            rowToPlay=board->getRowOfLastCoin(colToPlay);
-            if(board->checkVictory(rowToPlay,colToPlay)) {winner=m_name;}
+            cout<<"IA prevent opponent to win"<<endl;
+            return colToPlay;
         }
+        // if opponent can not win
         else if( colToPlay == -1 )
         {
-            winner=randomPlay(board);
+            return -1;
         }
         else
         {
-            return "Err_selectCol_IA_1";
+            return -3;
         }
 
 
- return winner;
+ return col;
 }
 
 
@@ -151,82 +163,85 @@ string ComputerPlayer::IA_1(Board* board)
 * IA_2 : IA first checks if it can win. If not check if opponent can win. if not play randomly.
 *
 * @param[in]  Board* board  : Pointer to a board
-* @param[out] return        : Returns  ComputerPlayer name if it is a winning move, else return "none"
+* @param[out] return        : Returns  index of the columns to play
 *
 **/
-string ComputerPlayer::IA_2(Board* board)
+int ComputerPlayer::IA_2(Board* board)
 {
     int colToPlay1(-1);
-    int colToPlay2(-1);
-    int rowToPlay(0);
+    int col(-1);
 
-    string winner("none");
+    if (board == NULL) {return -3;}
 
-    if (board == NULL) {return "Err_Board_IA_2";}
-
-        colToPlay2=selectCol(board,2);
+        //colToPlay2=selectCol(board,2);
         colToPlay1=selectCol(board,1);
 
         // play to win
-        if ( colToPlay1 >=0)
+        if ( colToPlay1 >=0  &&  colToPlay1 < board->getTotalCol() )
         {
-            cout<<m_name<<" win in playing in column : "<<colToPlay1<<endl;
+            cout<<m_name<<" will win !"<<endl;
             cout<<endl;
 
-            // normal we know that this move is already a winning one !
-            board->putCoin(colToPlay1,m_coinType);
-            rowToPlay=board->getRowOfLastCoin(colToPlay1);
-            if(board->checkVictory(rowToPlay,colToPlay1)) {winner=m_name;}
+            col=colToPlay1;
         }
-        // play to prevent opponent victory
-        else if ( colToPlay2 >= 0 )
-        {
-            cout<<m_name<<" prevents opponent to play on columns : "<<colToPlay2<<endl;
-            cout<<endl;
 
-            board->putCoin(colToPlay2,m_coinType);
-            rowToPlay=board->getRowOfLastCoin(colToPlay2);
-            winner=board->checkVictory(rowToPlay,colToPlay2);
-            if(board->checkVictory(rowToPlay,colToPlay2)) {winner=m_name;}
-        }
-        else if (colToPlay1 == -1 && colToPlay2 == -1)
+        // if IA can not win, play to prevent opponent victory
+        if (colToPlay1 == -1)
         {
-            winner=randomPlay(board);
+            col=IA_1(board);
         }
-        else    return "Err_selectCol_IA_2";
 
- return winner;
+        // if IA or opponent can not win at the next turn
+        if (colToPlay1 == -1 && col == -1)
+        {
+            col=-1;
+        }
+
+ return col;
+
 }
 
 
 
 /**
 *
-* Method to put a coin in a random column
+* Method to put a coin in the board
 *
 * @param[in]  Board* board  : Pointer to a board
 * @param[out] return        : Returns  ComputerPlayer name if it is a winning move, else return "none"
 *
 **/
-string ComputerPlayer::randomPlay(Board* board)
+string ComputerPlayer::putCoin(Board* board,int colToPlay)
 {
-    int colToPlay(0);
     int rowToPlay(0);
     int coinNotInBoard(-1);
     string winner("none");
 
     if(board == NULL){return "Err_Board_randomPlay";}
+    if(colToPlay <-1 || colToPlay >= board->getTotalCol()){return "Err_Outside1_Play";}
 
-    srand(time(NULL));
 
-    do
+    // random play process
+    if(colToPlay == -1 )
     {
-        colToPlay=rand()%(board->getTotalCol());
-        coinNotInBoard=board->putCoin(colToPlay,m_coinType);
+        srand(time(NULL));
 
+        do
+        {
+            colToPlay=rand()%(board->getTotalCol());
+            coinNotInBoard=board->putCoin(colToPlay  ,m_coinType );
+
+        } while (coinNotInBoard == -1);
+        // IA continues to play as long as it does not play in a free column
     }
-    while (coinNotInBoard == -1);
-    // IA continues to play as long as it does not play in a free column
+
+    // selected column play process
+    else
+    {
+        coinNotInBoard=board->putCoin(colToPlay,m_coinType);
+        if (coinNotInBoard == -1) {return "Err_Outside2_Play";}
+    }
+
 
     cout<<m_name<<" plays on column : "<<colToPlay<<endl;
     cout<<endl;

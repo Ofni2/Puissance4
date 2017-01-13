@@ -24,7 +24,7 @@ class ComputerPlayer : public Player
 
 
         // External methods
-        std::string play(Board* board);
+        virtual std::string play(Board* board);
 
 
         // Destructor
@@ -36,11 +36,11 @@ class ComputerPlayer : public Player
         // Internal methods
         int selectCol(Board* board,int option);
 
-        std::string IA_1(Board* board);
+        int IA_1(Board* board);
 
-        std::string IA_2(Board* board);
+        int IA_2(Board* board);
 
-        std::string randomPlay(Board* board);
+        std::string putCoin(Board* board,int colToPlay=-1);
 
 
         // Attributes
